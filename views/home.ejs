@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=S2nXC8Z2nl3J&format=png&color=000000" type="image/x-icon">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+        }
+
+        /* navigation */
+
+        .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 30px;
+            color: #FF7F50;
+            text-shadow: 3px 3px 0 #FFA07A;
+        }
+
+        .nav-link-signup, .nav-link-admin-panel {
+            background-color: #FFA07A;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .nav-link-signup:hover {
+            background-color: #FF7F50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .nav-link-login:hover {
+            cursor:pointer;
+        }
+
+        #categoryCarousel {
+            flex: 1;
+        }
+
+        /* categories */
+
+        /* Category Circle Styles */
+        .category-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .category-circle:hover {
+            transform: scale(1.1);
+        }
+
+
+        /* Image styles */
+        .category-circle img {
+            width: 100%;
+            height: auto;
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        /* footer */
+
+    .footer-custom {
+            background: linear-gradient(135deg, rgba(255, 127, 80, 0.9), rgba(255, 127, 80, 0.2));
+            color: white;
+            padding: 40px 0;
+            font-family: 'Arial', sans-serif;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-custom h5 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-custom p, .footer-custom a {
+            color: white;
+            font-size: 14px;
+        }
+
+        .footer-custom a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icon {
+            display: inline-block;
+            margin: 0 10px;
+            transition: transform 0.3s;
+        }
+
+        .social-icon img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FF7F50;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .profile-img:hover {
+            transform: scale(1.1);
+        }
+
+        /* event cards */
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .status-active {
+            background-color: rgba(76, 175, 80, 0.8);
+        }
+
+        .status-inactive {
+            background-color: rgba(244, 67, 54, 0.8);
+        }
+
+        .card {
+            border: none;
+            height: 100%;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Slike */
+        .event-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        .card-title {
+            margin-bottom: 0;
+        }
+
+        .price {
+            margin: 0;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .card-text {
+            margin-bottom: 0.5rem;
+        }
+
+        .custom-hr {
+            width: 50%;
+            margin: 2% auto;
+            border: 1px solid #ccc;
+        }
+
+        .custom-title {
+            background-color: #f8f9fa;
+            color: #FF7F50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .custom-title::after {
+            content: "";
+            width: 50px;
+            height: 3px;
+            background-color: #FF7F50;
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .organizer-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 14px;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .organizer-info i {
+            margin-right: 5px;
+        }
+
+        .search-input-wide {
+            width: 100%;
+        }
+
+
+        .greeting {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+            margin-right: 15px;
+        }
+
+        /* Stil za chat ikonu */
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #FF7F50;
+            color: #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+        }
+
+
+        .chat-icon:hover {
+            transform: scale(1.1);
+        }
+
+
+        /* Stil za listu korisnika */
+        .chat-list {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 250px;
+            max-height: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .chat-list h3 {
+            font-size: 18px;
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .chat-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-list li {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            color: #007bff;
+        }
+
+        .chat-list li:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Stil za mini prozor za poruke */
+        .chat-window {
+            position: fixed;
+            bottom: 80px;
+            right: 300px;
+            width: 300px;
+            max-height: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        #messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .message-input {
+            display: flex;
+            gap: 5px;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #send {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #send:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dugme za zatvaranje prozora */
+        .close-chat {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .close-chat:hover {
+            color: #555;
+        }
+
+        #messages {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .sender {
+            background-color: #daf8e3;
+            align-self: flex-end;
+            text-align: right;
+            border-radius: 8px 8px 0 8px;
+        }
+
+        .receiver {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+            text-align: left;
+            border-radius: 8px 8px 8px 0;
+        }
+
+
+
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <div class="logo">Eventify</div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="d-flex me-auto mb-2 mb-lg-0 w-100" role="search" action="/search" method="POST">
+                <input class="form-control me-2 search-input-wide" type="search" name="searchTerm" placeholder="Search events, organizers, locations..." aria-label="Search" required>
+                <button class="btn btn-outline-warning" type="submit">Search</button>
+            </form>
+            <ul class="navbar-nav flex-column flex-lg-row align-items-center">
+                <% if (!userId) { %>
+                    <li class="nav-item me-1">
+                        <a class="nav-link nav-link-login" onclick="login()">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-signup" href="/register">Sign up</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item me-1">
+                        <span class="nav-link greeting">Hello <%= name %> !!!</span>
+                    </li>
+                    <% if (userType === 1) { %>
+                        <li class="nav-item me-1">
+                            <a class="nav-link nav-link-admin-panel" href="/admin">Admin Panel</a>
+                        </li>
+                    <% } %>
+                    <li class="nav-item me-1 d-flex align-items-center">
+                        <a class="nav-link nav-link-signup" onclick="logout()">Logout</a>
+                    </li>
+                    <% if (userType !== 1) { %>
+                        <li class="nav-item me-1 d-flex align-items-center">
+                            <a class="nav-link nav-link-signup" href="/applications/<%= userId %>">Applications</a>
+                        </li>
+                    <% } %>
+                    <% if (userType === 2) { %>
+                        <li class="nav-item me-1 d-flex align-items-center">
+                            <a class="nav-link" href="/organiser/<%= userId %>">
+                                <img src="<%= users.profile_picture %>" alt="Profile" class="profile-img">
+                            </a>
+                        </li>
+                    <% } %>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Categories Section -->
+    <div id="categoryCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <% for (let i = 0; i < categories.length; i += 5) { %>
+                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                    <div class="row justify-content-center text-center">
+                        <% for (let j = 0; j < 5 && (i + j) < categories.length; j++) { %>
+                            <div class="col-2 justify-content-center text-center">
+                                <div class="category-circle" onclick="window.location.href='/category/<%= categories[i + j].id %>'">
+                                    <img src="<%= categories[i + j].image || '/path/to/default-image.jpg' %>" alt="Category Image">
+                                </div>
+                                <h5><%= categories[i + j].name %></h5>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#categoryCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#categoryCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <hr class="custom-hr">
+
+
+
+
+    <!-- Events Section -->
+    <div class="container mt-5 mb-5">
+        <button class="btn nav-link-signup mb-4" onclick="location.href='/category/0'">All Events</button>
+        <!-- Random Events -->
+        <h5 class="custom-title text-start mb-4">Random selected events:</h5>
+        <div class="row g-4 mb-4">
+            <% random_events.forEach(event => { %>
+                <div class="col-md-4">
+                    <div class="card shadow-sm" style="position: relative; height: 100%;" data-id="<%= event.id%>">
+                        <!-- Organizator -->
+                        <div class="organizer-info">
+                            <i class="bi bi-person-fill"></i>
+                            <%= event.organizer_name %> <%= event.organizer_surname %>
+                        </div>
+                        <!-- Status -->
+                        <div class="status-indicator <%= event.event_status_id === 1 ? 'status-active' : 'status-inactive' %>">
+                            <%= event.status_name %>
+                        </div>
+                        <img class="card-img-top event-image" src="<%= event.image %>" alt="Event image">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title"><%= event.name %></h5>
+                                <p class="card-text price"><%= event.ticket_price %> $</p>
+                            </div>
+                            <p class="card-text italic"><%= event.category_name %></p>
+                            <div class="d-flex justify-content-between mt-auto">
+                                <p class="card-text"><%= event.formattedDate %> <%= event.formattedTime %></p>
+                                <p class="card-text"><%= event.location_name %> <i class="bi bi-geo-alt-fill"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <!-- Popular Events -->
+        <h5 class="custom-title text-start mb-4">Most popular events:</h5>
+        <div class="row g-4 mb-4">
+            <% popular_events.forEach(event => { %>
+                <div class="col-md-4">
+                    <div class="card shadow-sm" style="position: relative; height: 100%;" data-id="<%= event.id%>">
+
+                        <div class="organizer-info">
+                            <i class="bi bi-person-fill"></i>
+                            <%= event.organizer_name %> <%= event.organizer_surname %>
+                        </div>
+                        <!-- Status -->
+                        <div class="status-indicator <%= event.event_status_id === 1 ? 'status-active' : 'status-inactive' %>">
+                            <%= event.status_name %>
+                        </div>
+                        <img class="card-img-top event-image" src="<%= event.image %>" alt="Event image">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title"><%= event.name %></h5>
+                                <p class="card-text price"><%= event.ticket_price %> $</p>
+                            </div>
+                            <p class="card-text italic"><%= event.category_name %></p>
+                            <div class="d-flex justify-content-between mt-auto">
+                                <p class="card-text"><%= event.formattedDate %> <%= event.formattedTime %></p>
+                                <p class="card-text"><%= event.location_name %> <i class="bi bi-geo-alt-fill"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <!-- Based on users Interest
+            If user is not logged in then leave this empty
+        -->
+        <%if (userId){%>
+            <h5 class="custom-title text-start mb-4">Based on your interests:</h5>
+            <div class="row g-4 mb-4">
+                <% custom_events.forEach(event => { %>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm" style="position: relative; height: 100%;" data-id="<%= event.id%>">
+                            <!-- Organizator -->
+                            <div class="organizer-info">
+                                <i class="bi bi-person-fill"></i>
+                                <%= event.organizer_name %> <%= event.organizer_surname %>
+                            </div>
+                            <!-- Status -->
+                            <div class="status-indicator <%= event.event_status_id === 1 ? 'status-active' : 'status-inactive' %>">
+                                <%= event.status_name %>
+                            </div>
+                            <img class="card-img-top event-image" src="<%= event.image %>" alt="Event image">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"><%= event.name %></h5>
+                                    <p class="card-text price"><%= event.ticket_price %> $</p>
+                                </div>
+                                <p class="card-text italic"><%= event.category_name %></p>
+                                <div class="d-flex justify-content-between mt-auto">
+                                    <p class="card-text"><%= event.formattedDate %> <%= event.formattedTime %></p>
+                                    <p class="card-text"><%= event.location_name %> <i class="bi bi-geo-alt-fill"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <%}%>
+    </div>
+
+
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>About Eventify</h5>
+                    <p>
+                        Eventify helps you find and create events tailored to your interests. Join the fun and never miss out on any exciting events!
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h5>Follow Us</h5>
+                    <a href="#" class="social-icon"><img src="/images/facebook-icon.png" alt="Facebook" /></a>
+                    <a href="#" class="social-icon"><img src="/images/x-icon.png" alt="X" /></a>
+                    <a href="#" class="social-icon"><img src="/images/instagram-icon.png" alt="Instagram" /></a>
+                </div>
+                <div class="col-md-4 text-end">
+                    <h5>Contact Us</h5>
+                    <p>Email: <a href="mailto:support@eventify.com">support@eventify.com</a></p>
+                    <p>Phone: +123 456 7890</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2024 Eventify. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <%if(userId){%>
+    <!-- CHAT -->
+        <div class="chat-icon" onclick="toggleChatList()">
+            💬
+        </div>
+
+
+        <div class="chat-list" id="chatList">
+            <span class="close-chat" onclick="closeChat()">X</span>
+            <h3>Chat </h3>
+            <ul id="userList">
+                <%users_chat.forEach(user1 => {%>
+                <%if(user1.id !== userId){%>
+                    <li onclick='openChat(<%- JSON.stringify(user1) %>)'>
+                        <%= user1.name%> <%=user1.surname%>
+                        <%if(user1.user_type_id === 1){%>
+                            (ADMIN)
+                        <%} else if (user1.user_type_id === 2){%>
+                            (ORGANISER)
+                        <%} else {%>
+                            (USER)
+                        <%}%>
+                    </li>
+                <%}})%>
+
+            </ul>
+        </div>
+
+
+
+        <div class="chat-window" id="chatWindow" style="display: none;">
+            <span class="close-chat" onclick="closeChatWindow()">X</span>
+            <h3 id="chatWith">Chat with (Ime Prezime cu staviti tu): </h3>
+            <div id="messages">
+
+            </div>
+            <div class="message-input">
+                <input type="text" id="messageInput" placeholder="Type a message..." />
+                <button onclick="sendMessage()" id="send">SEND</button>
+            </div>
+        </div>
+    <%}%>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        function login(){
+            location.href = '/login';
+        }
+
+        function logout(){
+            location.href = '/login/logout'
+        }
+        function profile(){
+            location.href = '/organiser'
+        }
+
+        const userId = <%= JSON.stringify(userId) %>
+        //console.log("UserId", userId);
+
+        document.querySelectorAll('.card').forEach(card =>{
+            card.addEventListener('click', function() {
+
+                const eventId = this.getAttribute('data-id');
+                console.log("clicked", eventId);
+                window.location.href = `/event/${eventId}`;
+            })
+        })
+
+        let socket = io.connect('ws://localhost:3000')
+        socket.emit('register', userId);
+
+
+        const userList = document.getElementById('userList');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatWith = document.getElementById('chatWith');
+        const messagesDiv = document.getElementById('messages');
+        let currentChatUser = null;
+
+
+        function toggleChatList() {
+            const chatList = document.getElementById('chatList');
+            chatList.style.display = chatList.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Otvara chat prozor sa odabranim korisnikom
+        async function openChat(user) {
+            currentChatUser = user;
+            chatWith.textContent = `Chat with: ${user.name} ${user.surname}`;
+            chatWindow.style.display = 'block';
+
+            // Fetch chat history
+            const response = await fetch(`/chat-history/${user.id}/${userId}`);
+            const messages = await response.json();
+
+            // Display messages with different alignment for sender and receiver
+            const messagesContainer = document.getElementById('messages');
+            messagesContainer.innerHTML = ''; // Clear previous messages
+            messages.forEach((message) => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+
+                // Check if the message is from the current user or the other user
+                if (message.sender_id === userId) {
+                    messageElement.classList.add('sender'); // Sender (you)
+                    messageElement.textContent = `You: ${message.text}`;
+                } else {
+                    messageElement.classList.add('receiver'); // Receiver (other user)
+                    messageElement.textContent = `${user.name}: ${message.text}`;
+                }
+
+                messagesContainer.appendChild(messageElement);
+            });
+        }
+
+
+
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+            if (!message) return;
+
+            socket.emit('chat message', {
+                senderId: userId,
+                receiverId: currentChatUser.id,
+                message,
+            });
+
+            // Display the message on the UI with alignment
+            const messagesContainer = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'sender');
+            messageElement.textContent = `You: ${message}`;
+            messagesContainer.appendChild(messageElement);
+
+            messageInput.value = ''; // Clear input
+        }
+
+        socket.on('newMessage', (data) => {
+            const { senderId, message } = data;
+
+
+            console.log(`New message from user ${senderId}: ${message}`);
+
+
+            const messagesContainer = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'receiver');
+
+            messageElement.textContent = `${message}`;
+            messagesContainer.appendChild(messageElement);
+        });
+
+
+
+
+        function closeChatWindow() {
+            chatWindow.style.display = 'none';
+        }
+        function closeChat() {
+            document.getElementById('chatList').style.display = 'none';
+        }
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

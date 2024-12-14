@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=S2nXC8Z2nl3J&format=png&color=000000" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 30px;
+            color: #FF7F50;
+            text-shadow: 3px 3px 0 #FFA07A;
+        }
+
+        .nav-link-signup, .nav-link-admin-panel {
+            background-color: #FFA07A;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .nav-link-signup:hover {
+            background-color: #FF7F50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .nav-link-login:hover {
+            cursor: pointer;
+        }
+
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .profile-header {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-color: #d8d8d8;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+        }
+
+        .profile-header img.cover-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .edit-cover-photo {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(255, 127, 80, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .profile-picture {
+            position: relative;
+            margin-top: -60px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            overflow: hidden;
+            cursor: pointer;
+            z-index: 1;
+
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            text-align: center;
+            margin-top: 10px;
+            padding: 20px;
+        }
+
+        .profile-info h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .profile-info p {
+            color: rgb(128, 128, 128);
+        }
+
+        .profile-nav {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            background-color: white;
+        }
+
+        .profile-nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 20px;
+        }
+
+        .profile-nav a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .content-section {
+            padding: 20px;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-edit {
+            background-color: rgba(255, 127, 80, 0.7);
+            color: white;
+        }
+
+        .form-edit:hover {
+            background-color: #FF7F50;
+            color: white;
+        }
+        #exampleInputImage{
+            display:block;
+        }
+
+        #exampleEditImage{
+            display:block;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .carousel-inner {
+            padding: 20px 0;
+        }
+
+        .carousel-item .card {
+            margin: 0 15px;
+        }
+
+        .carousel {
+            position: relative;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .carousel-control-prev {
+            left: 0;
+        }
+
+        .carousel-control-next {
+            right: 0;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .status-active {
+            background-color: rgba(76, 175, 80, 0.8);
+        }
+
+        .status-inactive {
+            background-color: rgba(244, 67, 54, 0.8);
+        }
+
+        .card-title {
+            margin-bottom: 0;
+        }
+
+        .price {
+            margin: 0;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+
+        .card-text {
+            margin-bottom: 0.5rem;
+        }
+
+        .button-group {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .greeting {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+            margin-right: 15px;
+        }
+        .card {
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <div class="logo">Eventify</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <%if(!userId){%>
+                    <li class="nav-item me-1">
+                        <a class="nav-link nav-link-login" onclick="login()">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  nav-link-signup" href="/register">Sign up</a>
+                    </li>
+                    <%} else{%>
+                    <li class="nav-item me-1">
+                        <a class="nav-link greeting">Hello <%=name%> !!!</a>
+                    </li>
+                        <%if (userType === 1) {%>
+                            <li class="nav-item me-1">
+                                <a class="nav-link nav-link-admin-panel" href="/admin">Admin Panel</a>
+                            </li>
+                        <%}%>
+                        <%if (userType !== 1){%>
+                        <li class="nav-item me-1 d-flex align-items-center">
+                            <a class="nav-link nav-link-signup" href="/applications/<%=userId%>">Applications</a>
+                        </li>
+                        <%}%>
+                    <li class="nav-item me-1">
+                        <a class="nav-link nav-link-signup" onclick="logout()">Logout</a>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <img src= "<%= backgroundPicture%>" alt="Cover Photo" class="cover-photo">
+            <%if(userId === organizer.id && userId){%>
+            <label for="cover-photo-upload" class="edit-cover-photo">Edit Cover Photo</label>
+            <input type="file" id="cover-photo-upload" onchange="changeCoverPhoto(event)">
+            <%}%>
+        </div>
+
+        <!-- Profile Picture -->
+        <div class="profile-picture" onclick="document.getElementById('profile-photo-upload').click();">
+            <img src="<%= profilePicture %>" alt="Profile Picture">
+            <input type="file" id="profile-photo-upload" onchange="changeProfilePhoto(event)">
+        </div>
+
+        <!-- Profile Info -->
+        <div class="container profile-info">
+            <div class="row align-items-center">
+                <div class="col d-flex justify-content-center position-relative">
+
+                    <h1 class="text-center"><%= organizer.name %> <%= organizer.surname %></h1>
+
+                    <%if(userId === organizer.id && userId){%>
+                    <button type="button" class="btn btn-success position-absolute end-0" data-bs-toggle="modal" data-bs-target=".edit-profile">
+                        <i class="bi bi-pencil-square"></i> Edit profile
+                    </button>
+                    <%}%>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <p>Organizer of <%= event_numbers %> events</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container px-5">
+
+            <%if(userId === organizer.id && userId){%>
+            <div class="text-start mb-3">
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target=".new-event">
+                    <i class="bi bi-plus"></i> Create new event
+                </button>
+            </div>
+                <%}%>
+
+            <!-- Profile navigation -->
+            <div class="profile-nav">
+                <a href="#">Overview</a>
+                <a href="#carouselExampleControls">Events</a>
+                <a href="#">Reviews</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <% for(let i = 0; i < events.length; i += 2) { %>
+                    <div class="carousel-item <%= i === 0 ? 'active' : '' %>" >
+                        <div class="row justify-content-center">
+                            <div class="col-md-5">
+                                <div class="card" style="width: 18rem; position: relative;" onclick="location.href='/event/<%= events[i].id %>'">
+
+                                    <%if(userId === organizer.id && userId){%>
+                                    <div class="button-group">
+                                        <button class="btn btn-warning btn-sm edit-btn" data-id="<%= events[i].id %>">Edit</button>
+                                        <button class="btn btn-danger btn-sm delete-btn" data-id="<%= events[i].id %>">Delete</button>
+                                    </div>
+                                        <%}%>
+
+                                    <div class="status-indicator <%= events[i].event_status_id === 1 ? 'status-active' : 'status-inactive' %>">
+                                        <%= events[i].status_name %>
+                                    </div>
+                                    <img class="card-img-top" src="<%= events[i].image %>" alt="Card image cap">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title"><%= events[i].name %></h5>
+                                            <p class="card-text price"><%= events[i].ticket_price %> $</p>
+                                        </div>
+                                        <p class="card-text italic"><%= events[i].category_name %></p>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="card-text"><%= events[i].formattedDate %> <%= events[i].formattedTime %></p>
+                                            <p class="card-text"><%= events[i].location_name %> <i class="bi bi-geo-alt-fill"></i></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% if (events[i + 1]) { %>
+                                <div class="col-md-5 ms-md-3">
+                                    <div class="card" style="width: 18rem; position: relative;" onclick="location.href='/event/<%= events[i+1].id %>'">
+
+                                        <%if(userId === organizer.id && userId){%>
+                                        <div class="button-group">
+                                            <button class="btn btn-warning btn-sm edit-btn" data-id="<%= events[i+1].id %>">Edit</button>
+                                            <button class="btn btn-danger btn-sm delete-btn" data-id="<%= events[i+1].id %>">Delete</button>
+                                        </div>
+                                            <%}%>
+
+                                        <div class="status-indicator <%= events[i + 1].event_status_id === 1 ? 'status-active' : 'status-inactive' %>">
+                                            <%= events[i + 1].status_name %>
+                                        </div>
+                                        <img class="card-img-top" src="<%= events[i + 1].image %>" alt="Card image cap">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="card-title"><%= events[i + 1].name %></h5>
+                                                <p class="card-text price"><%= events[i + 1].ticket_price %> $</p>
+                                            </div>
+                                            <p class="card-text italic"><%= events[i + 1].category_name %></p>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="card-text date"><%= events[i + 1].formattedDate %> <%= events[i + 1].formattedTime %></p>
+                                                <p class="card-text date"><%= events[i + 1].location_name %> <i class="bi bi-geo-alt-fill"></i></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <hr style="width: 80%">
+
+        <%if(userId === organizer.id && userId){%>
+        <button class="btn btn-success mb-4" onclick="location.href='/organiser/application-record'">Applications Overview</button>
+        <%}%>
+    </div>
+
+
+    <!-- Edit profile dialog with form -->
+    <div class="modal edit-profile" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/organiser/edit-profile/<%=userId%>" method="POST">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<%= email%>" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputNameCat">Name</label>
+                            <input type="text" class="form-control" id="exampleInputNameCat" value="<%= name%>" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputSurname">Surname</label>
+                            <input type="text" class="form-control" id="exampleInputSurname" value="<%= surname%>" name="surname" required>
+                        </div>
+
+                        <button type="submit" class="btn form-edit">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create new event dialog with form -->
+    <div class="modal new-event" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/organiser/create-event/<%=userId%>" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="exampleInputName">Event name</label>
+                            <input type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" placeholder="Event name..." name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputDate">Date</label>
+                            <input type="date" class="form-control" id="exampleInputDate" placeholder="Date..." name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputTime">Time</label>
+                            <input type="time" class="form-control" id="exampleInputTime" placeholder="Time..." name="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputLocation">Location</label>
+                            <select id="exampleInputLocation" name="location">
+                                <% locations.forEach(function(location) { %>
+                                    <option value="<%= location.id %>"><%= location.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputDescription">Description</label>
+                            <textarea class="form-control" id="exampleInputDescription" placeholder="Description..." name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputCategory">Category</label>
+                            <select id="exampleInputCategory" name="category">
+                                <% categories.forEach(function(category) { %>
+                                    <option value="<%= category.id %>"><%= category.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPrice">Price</label>
+                            <input type="number" class="form-control" id="exampleInputPrice" placeholder="Price $$$..." name="price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputImage">Image</label>
+                            <input type="file" class="form-control" id="exampleInputImage" name="image" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="btn form-edit">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit event dialog with form -->
+    <div class="modal edit-event" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit event</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleEditName">Event name</label>
+                            <input type="text" class="form-control" id="exampleEditName" placeholder="Event name..." name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditDate">Date</label>
+                            <input type="date" class="form-control" id="exampleEditDate" placeholder="Date..." name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditTime">Time</label>
+                            <input type="time" class="form-control" id="exampleEditTime" placeholder="Time..." name="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditLocation">Location</label>
+                            <select id="exampleEditLocation" name="location">
+                                <% locations.forEach(function(location) { %>
+                                    <option value="<%= location.id %>"><%= location.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditDescription">Description</label>
+                            <textarea class="form-control" id="exampleEditDescription" placeholder="Description..." name="description" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditCategory">Category</label>
+                            <select id="exampleEditCategory" name="category">
+                                <% categories.forEach(function(category) { %>
+                                    <option value="<%= category.id %>"><%= category.name %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditPrice">Price</label>
+                            <input type="number" class="form-control" id="exampleEditPrice" placeholder="Price $$$..." name="price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleEditImage">Image</label>
+                            <input type="file" class="form-control" id="exampleEditImage" name="image" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn form-edit" id="edit-submit-btn" data-id="">Submit</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="eventData" data-events='<%= JSON.stringify(events) %>'></div>
+
+    <script>
+        function login(){
+            location.href = '/login';
+        }
+
+        function logout(){
+            location.href = '/login/logout'
+        }
+
+        function changeProfilePhoto(event) {
+            const file = event.target.files[0];
+            console.log("file" , file)
+            if (file) {
+                const formData = new FormData();
+                formData.append('profilePhoto', file);
+
+                const userId = `<%= userId %>`;
+                console.log(userId);
+                const numericUserId = Number(userId);
+                console.log(numericUserId);
+
+                fetch(`/organiser/profile-photo/${numericUserId}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        console.log(data)
+                        if (data.message) {
+
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.querySelector('.profile-picture img').src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            alert("Failed to upload image.");
+                        }
+                    })
+                    .catch(err => console.error("Error uploading image: ", err));
+            }
+        }
+
+
+        function changeCoverPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('coverPhoto', file);
+
+                const userId = `<%= userId %>`;
+                console.log(userId);
+                const numericUserId = Number(userId);
+                console.log(numericUserId);
+
+                fetch(`/organiser/cover-photo/${numericUserId}`, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        if (data.message) {
+
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                document.querySelector('.cover-photo').src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        } else {
+                            alert("Failed to upload image.");
+                        }
+                    })
+                    .catch(err => console.error("Error uploading image: ", err));
+            }
+        }
+
+
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const eventId = this.getAttribute('data-id');
+
+
+                if (confirm('Are you sure you want to delete this event?')) {
+
+                    fetch(`/organiser/events/${eventId}`, {
+                        method: 'DELETE',
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Error while deleting event');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                const eventCard = this.closest('.col-md-5');
+                                eventCard.remove();
+                                alert('Event deleted successfully');
+                            } else {
+                                alert('Failed to delete event');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('There was an issue deleting the event. Please try again.');
+                        });
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const eventsElement = document.getElementById('eventData');
+            const events = JSON.parse(eventsElement.getAttribute('data-events'));
+
+
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const eventId = this.getAttribute('data-id');
+                    console.log("ID EVENTA - ", eventId);
+
+                    const event = events.find(event => event.id === parseInt(eventId));
+
+
+                    if (event) {
+
+                        document.getElementById('exampleEditName').value = event.name;
+                        document.getElementById('exampleEditDate').value = new Date(event.date).toISOString().slice(0, 10);
+                        document.getElementById('exampleEditTime').value = event.time.slice(0, 5);
+                        document.getElementById('exampleEditLocation').value = event.location_id;
+                        document.getElementById('exampleEditDescription').value = event.description;
+                        document.getElementById('exampleEditCategory').value = event.category_id;
+                        document.getElementById('exampleEditPrice').value = event.ticket_price;
+
+
+                        document.getElementById('edit-submit-btn').setAttribute('data-id', eventId);
+
+                        const editEventModal = new bootstrap.Modal(document.querySelector('.edit-event'), {});
+                        editEventModal.show();
+                    } else {
+                        console.error(`Event with ID ${eventId} not found.`);
+                    }
+                });
+            });
+        });
+
+
+        $('#edit-submit-btn').on('click', function (event) {
+            event.preventDefault();
+            const eventsElement = document.getElementById('eventData');
+            const events = JSON.parse(eventsElement.getAttribute('data-events'));
+            const eventId = $(this).data('id');
+
+            const formData = new FormData();
+            formData.append('name', $('#exampleEditName').val());
+            formData.append('date', $('#exampleEditDate').val());
+            formData.append('time', $('#exampleEditTime').val());
+            formData.append('location_id', $('#exampleEditLocation').val());
+            formData.append('description', $('#exampleEditDescription').val());
+            formData.append('category_id', $('#exampleEditCategory').val());
+            formData.append('ticket_price', $('#exampleEditPrice').val());
+
+            const imageFile = $('#exampleEditImage')[0].files[0];
+            console.log("IMAGE FILE - ", imageFile);
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            $.ajax({
+                url: `/organiser/edit-event/${eventId}`,
+                type: 'PUT',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+
+                        const updatedEvent = {
+                            id: eventId,
+                            name: $('#exampleEditName').val(),
+                            date: $('#exampleEditDate').val(),
+                            time: $('#exampleEditTime').val(),
+                            location_id: $('#exampleEditLocation').val(),
+                            description: $('#exampleEditDescription').val(),
+                            category_id: $('#exampleEditCategory').val(),
+                            ticket_price: $('#exampleEditPrice').val(),
+                            image: imageFile ? `/events/${imageFile.name}` : response.image
+                        };
+
+
+                        const eventIndex = events.findIndex(event => event.id === parseInt(eventId));
+                        if (eventIndex > -1) {
+                            events[eventIndex] = updatedEvent;
+                        }
+
+                        const eventCard = $(`button[data-id="${eventId}"]`).closest('.card');
+
+
+                        eventCard.find('.card-title').text(updatedEvent.name);
+                        eventCard.find('.price').text(`${updatedEvent.ticket_price} $`);
+                        eventCard.find('.card-text.italic').text($('#exampleEditCategory option:selected').text());
+                        eventCard.find('.card-text.date').first().text(`${new Date(updatedEvent.date).toLocaleDateString()} ${updatedEvent.time}`);
+                        eventCard.find('.bi-geo-alt-fill').prev().text($('#exampleEditLocation option:selected').text());
+
+
+                        if (imageFile) {
+                            const newImageURL = URL.createObjectURL(imageFile);
+                            eventCard.find('.card-img-top').attr('src', newImageURL);
+                        }
+
+
+                        $('.edit-event').modal('hide');
+                    } else {
+                        alert('There was a problem updating the event.');
+                    }
+                },
+                error: function () {
+                    alert('There was an error updating the event. Please try again.');
+                }
+            });
+        });
+
+
+
+
+
+    </script>
+
+
+</body>
+</html>

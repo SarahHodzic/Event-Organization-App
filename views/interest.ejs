@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=S2nXC8Z2nl3J&format=png&color=000000" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <title><%= title %></title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .event-category-container {
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 3%;
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        .event-category {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .event-category > div {
+            flex: 1 1 calc(5% - 50px);
+            box-sizing: border-box;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .event-category img {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .event-category img.selected {
+            border: 2px solid #FF7F50;
+        }
+
+        .event-category-label {
+            text-align: center;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        .link-container a {
+            color: #FF7F50;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+       .link-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<h2><%= user_id %></h2>
+
+<div class="event-category-container" id="eventCategoryContainer">
+    <h2 style="text-align: center">Select your interests</h2>
+    <div class="event-category">
+        <% for(let i = 0; i < eventCategories.length; i++) { %>
+            <div>
+                <img src="<%= eventCategories[i].image %>" alt="<%= eventCategories[i].name %>" data-id="<%= eventCategories[i].id %>">
+                <div class="event-category-label"><%= eventCategories[i].name %></div>
+            </div>
+        <% } %>
+    </div>
+    <div class="link-container">
+        <button class="btn btn-warning" id="submitInterests">Submit Interests</button>
+        <a href="/">Skip</a>
+    </div>
+
+</div>
+
+<script>
+    const userId = '<%=user_id%>';
+
+    document.querySelectorAll('.event-category img').forEach(img => {
+        img.addEventListener('click', () => {
+            img.classList.toggle('selected');
+        });
+    });
+
+    document.getElementById('submitInterests').addEventListener('click', () => {
+        const selectedCategories = Array.from(document.querySelectorAll('.event-category img.selected')).map(img => img.getAttribute('data-id'));
+
+        if (selectedCategories.length === 0) {
+            alert('Please select at least one interest');
+            return;
+        }
+
+        console.log("SELECTED CATEGORIES ", selectedCategories);
+
+        fetch(`/register/insertInterests/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ categories: selectedCategories })
+        }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/login';
+                } else {
+                    alert('Failed to submit interests');
+                }
+            }).catch(error => {
+            alert('An error occurred');
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>

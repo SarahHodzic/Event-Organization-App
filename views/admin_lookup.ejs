@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="https://img.icons8.com/?size=100&id=S2nXC8Z2nl3J&format=png&color=000000" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+        }
+
+        /* navigation */
+
+        .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 30px;
+            color: #FF7F50;
+            text-shadow: 3px 3px 0 #FFA07A;
+        }
+
+        .nav-link-signup {
+            background-color: #FFA07A;
+            font-weight: bold;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .nav-link-signup:hover {
+            background-color: #FF7F50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .nav-link-login:hover {
+            cursor:pointer;
+        }
+        .custom-title {
+            background-color: #f8f9fa;
+            color: #FF7F50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .custom-title::after {
+            content: "";
+            width: 50px;
+            height: 3px;
+            background-color: #FF7F50;
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .forma {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        .active {
+            opacity: 1;
+            max-height: 100vh;
+            margin-bottom: 100px;
+        }
+        .greeting {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+            margin-right: 15px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <div class="logo">Eventify</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <%if(!userId){%>
+                    <li class="nav-item me-1">
+                        <a class="nav-link nav-link-login" onclick="login()">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  nav-link-signup" href="/register">Sign up</a>
+                    </li>
+                    <%} else{%>
+                    <li class="nav-item me-1">
+                        <a class="nav-link greeting">Hello <%=name%> !!!</a>
+                    </li>
+                    <li class="nav-item me-1 d-flex align-items-end">
+                        <a class="nav-link nav-link-signup" onclick="logout()">Logout</a>
+                    </li>
+                    <%}%>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- APPLICATION STATUS TABLE -->
+        <h5 class="custom-title text-start m-4">Application Status</h5>
+        <div class="m-2"><button type="button" class="btn btn-outline-dark" id="prikazForme">Add Application Status <i class="fa fa-plus-square-o"></i></button></div>
+        <div class="container-fluid forma" id="forma">
+            <h2>Insert Application Status</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <button type="submit" class="btn btn-outline-success" id="submitForm" style="float:right;">Insert</button>
+            </form>
+        </div>
+        <table class="table table-bordered table-hover" id="ApplicationTable">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% application_status.forEach(app_status => { %>
+                <tr id="rowApp-<%= app_status.id %>">
+                    <td>
+                        <%= app_status.id%>
+                    </td>
+                    <td><%= app_status.name %></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-id1="<%= app_status.id %>"
+                                onclick="edit('<%=app_status.id%>',1)"
+                            >
+                            EDIT
+                        </button>
+                        <button type="button" class="btn btn-outline-danger"
+                                data-id="<%= app_status.id %>"
+                                onclick="delete_row('<%=app_status.id%>',1)">
+                            DELETE
+                        </button>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+
+        <!-- EVENT CATEGORY TABLE -->
+        <h5 class="custom-title text-start m-4">Event Category</h5>
+        <div class="m-2"><button type="button" class="btn btn-outline-dark" id="EventCategoryButton">Add Event Category <i class="fa fa-plus-square-o"></i></button></div>
+        <div class="container-fluid forma" id="EventCategoryForm">
+            <h2>Insert Event Category</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="nameCat" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="nameCat" name="name" required>
+                </div>
+                <button type="submit" class="btn btn-outline-success" id="submitForm" style="float:right;">Insert</button>
+            </form>
+        </div>
+        <table class="table table-bordered table-hover" id="EventCategoryTable">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% event_category.forEach(event_cat => { %>
+                <tr id="rowCat-<%= event_cat.id %>">
+                    <td>
+                        <%= event_cat.id%>
+                    </td>
+                    <td><%= event_cat.name %></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-id1="<%= event_cat.id %>"
+                                onclick="edit('<%=event_cat.id%>',2)"
+                        >
+                            EDIT
+                        </button>
+                        <button type="button" class="btn btn-outline-danger"
+                                data-id="<%= event_cat.id %>"
+                                onclick="delete_row('<%=event_cat.id%>',2)">
+                            DELETE
+                        </button>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+
+        <!-- LOCATION TABLE -->
+        <h5 class="custom-title text-start m-4">Location</h5>
+        <div class="m-2"><button type="button" class="btn btn-outline-dark" id="LocationButton">Add Location <i class="fa fa-plus-square-o"></i></button></div>
+        <div class="container-fluid forma" id="LocationForm">
+            <h2>Insert Location</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="nameLocation" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="nameLocation" name="name" required>
+                </div>
+                <button type="submit" class="btn btn-outline-success" id="submitForm" style="float:right;">Insert</button>
+            </form>
+        </div>
+        <table class="table table-bordered table-hover" id="LocationTable">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% location_tab.forEach(loc => { %>
+                <tr id="rowLoc-<%= loc.id %>">
+                    <td>
+                        <%= loc.id%>
+                    </td>
+                    <td><%= loc.name %></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-id1="<%= loc.id %>"
+                                onclick="edit('<%=loc.id%>',3)"
+                        >
+                            EDIT
+                        </button>
+                        <button type="button" class="btn btn-outline-danger"
+                                data-id="<%= loc.id %>"
+                                onclick="delete_row('<%=loc.id%>',3)">
+                            DELETE
+                        </button>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        function login(){
+            location.href = '/login';
+        }
+
+        function logout(){
+            location.href = '/login/logout'
+        }
+
+        const form = document.getElementById('forma');
+        const submitButton = document.getElementById('prikazForme')
+        const EventCategoryForm = document.getElementById('EventCategoryForm')
+        const EventCategoryButton = document.getElementById('EventCategoryButton')
+        const LocationForm = document.getElementById('LocationForm')
+        const LocationButton = document.getElementById('LocationButton')
+
+        submitButton.addEventListener('click', function(){
+            form.classList.toggle('active')
+        })
+
+        EventCategoryButton.addEventListener('click', function(){
+            EventCategoryForm.classList.toggle('active')
+        })
+
+        LocationButton.addEventListener('click', function(){
+            LocationForm.classList.toggle('active')
+        })
+
+
+        function delete_row(id, table_id){
+            console.log(id)
+            console.log(table_id)
+
+            $.ajax({
+                url: `/admin/lookup`,
+                type: "DELETE",
+                contentType: 'application/json',
+                data: JSON.stringify({id: id, table_id: table_id}),
+                success: function(response){
+                    if(response.success){
+                        let row
+                        if(table_id === 1)
+                            row = $("#rowApp-" + id)
+                        else if(table_id === 2)
+                            row = $("#rowCat-" + id)
+                        else if(table_id === 3)
+                            row = $("#rowLoc-" + id)
+                        console.log("id nakon uspjeha", id)
+                        row.remove()
+                        console.log("Uspjesno obrisan red")
+                    }
+                },
+                error: function(){
+                    console.log("Greska prilikom brisanja reda")
+                }
+
+            })
+        }
+
+        /*APPLICATION INSERT*/
+        $("#forma").on('submit', function(event){
+            event.preventDefault()
+            console.log("uslo ovdje")
+
+            const name = $("#name").val()
+
+            console.log("NAME", name)
+
+            $.ajax({
+                url: '/admin/addApplication',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({name: name, table_id: 1}),
+                success: function(response){
+                    if(response.success){
+                        console.log("Uspjesno dodan red")
+                        $('#ApplicationTable tbody').append(`
+                        <tr id="rowApp-${response.id}">
+                    <td>
+                        ${response.id}
+                    </td>
+                    <td>${response.name}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-id1="${response.id}"
+                                onclick="edit('${response.id}',1)"
+                            >
+                            EDIT
+                        </button>
+                        <button type="button" class="btn btn-outline-danger"
+                                data-id="${response.id}"
+                                onclick="delete_row('${response.id}',1)">
+                            DELETE
+                        </button>
+                    </td>
+                </tr>
+                        `)
+
+                        form.classList.toggle('active')
+                    }
+                },
+                error: function(error){
+                    console.log("Error while adding application", error)
+                }
+            })
+
+        })
+
+        /*EVENT CATEGORY INSERT*/
+        $("#EventCategoryForm").on('submit', function(event){
+            event.preventDefault()
+            console.log("uslo ovdje")
+
+            const name = $("#nameCat").val()
+
+            console.log("NAME", name)
+
+            $.ajax({
+                url: '/admin/addApplication',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({name: name, table_id: 2}),
+                success: function(response){
+                    if(response.success){
+                        console.log("Uspjesno dodan red")
+                        $('#EventCategoryTable tbody').append(`
+                        <tr id="rowCat-${response.id}">
+                    <td>
+                        ${response.id}
+                    </td>
+                    <td>${response.name}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-id1="${response.id}"
+                                onclick="edit('${response.id}',2)"
+                        >
+                            EDIT
+                        </button>
+                        <button type="button" class="btn btn-outline-danger"
+                                data-id="${response.id}"
+                                onclick="delete_row('${response.id}',2)">
+                            DELETE
+                        </button>
+                    </td>
+                </tr>
+                        `)
+
+                        EventCategoryForm.classList.toggle('active')
+                    }
+                },
+                error: function(error){
+                    console.log("Error while adding event category", error)
+                }
+            })
+
+        })
+
+        /*LOCATION INSERT*/
+        $("#LocationForm").on('submit', function(event){
+            event.preventDefault()
+            console.log("uslo ovdje")
+
+            const name = $("#nameLocation").val()
+
+            console.log("NAME", name)
+
+            $.ajax({
+                url: '/admin/addApplication',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify({name: name, table_id: 3}),
+                success: function(response){
+                    if(response.success){
+                        console.log("Uspjesno dodan red")
+                        $('#LocationTable tbody').append(`
+                        <tr id="rowLoc-${response.id}">
+                    <td>
+                        ${response.id}
+                    </td>
+                    <td>${response.name}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-success" data-id1="${response.id}"
+                                onclick="edit('${response.id}',3)"
+                            >
+                            EDIT
+                        </button>
+                        <button type="button" class="btn btn-outline-danger"
+                                data-id="${response.id}"
+                                onclick="delete_row('${response.id}',3)">
+                            DELETE
+                        </button>
+                    </td>
+                </tr>
+                        `)
+
+                        LocationForm.classList.toggle('active')
+                    }
+                },
+                error: function(error){
+                    console.log("Error while adding application", error)
+                }
+            })
+
+        })
+
+        function edit(id, table_id){
+            location.href=`/admin/edit/${id}/${table_id}`
+        }
+
+
+    </script>
+
+
+</body>
+</html>
