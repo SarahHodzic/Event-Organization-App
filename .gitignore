@@ -1,0 +1,12 @@
+# Ignoriši .env fajl
+.env
+
+# Ignoriši node_modules direktorijum
+node_modules/
+
+# Ignoriši log fajlove
+*.log
+
+# Ignoriši build direktorijum (ako koristiš build sistem kao što je Webpack)
+dist/
+
